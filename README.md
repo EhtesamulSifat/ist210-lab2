@@ -1,4 +1,4 @@
-# IST 210 Lab 2 - University CRUD App
+# IST 210 Lab 2 - CRUD App
 
 Flask web app that performs Create / Read / Update / Delete against an Azure SQL
 Database. It runs on the four tables from the Lab 1 Microsoft Learn tutorial:
