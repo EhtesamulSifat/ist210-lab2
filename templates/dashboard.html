@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Enrollments - University Records{% endblock %}
+{% block content %}
+
+<div class="stats">
+  <div class="stat"><b>{{ stats.Students }}</b><span class="muted">Students</span></div>
+  <div class="stat"><b>{{ stats.Courses }}</b><span class="muted">Courses</span></div>
+  <div class="stat"><b>{{ stats.Credits }}</b><span class="muted">Enrollment records</span></div>
+  <div class="stat"><b>{{ stats.AvgGrade | grade }}</b><span class="muted">Average grade</span></div>
+</div>
+
+<div class="card">
+  <div class="toolbar">
+    <div>
+      <h2>Enrollments</h2>
+      <span class="muted">Credit &#8904; Student &#8904; Person &#8904; Course (4-table JOIN)</span>
+    </div>
+    <form method="get" action="{{ url_for('dashboard') }}">
+      <input type="search" name="q" value="{{ q }}" placeholder="Search student, course or teacher" maxlength="100">
+      <button class="btn secondary" type="submit">Search</button>
+      {% if q %}<a class="btn secondary" href="{{ url_for('dashboard') }}">Clear</a>{% endif %}
+    </form>
+    <a class="btn" href="{{ url_for('credit_create') }}">+ New enrollment</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Student</th><th>Email</th><th>Course</th><th>Teacher</th>
+          <th class="num">Grade</th><th class="num">Attempt</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for c in credits %}
+      <tr>
+        <td>{{ c.FirstName }} {{ c.LastName }}</td>
+        <td>{{ c.Email or "-" }}</td>
+        <td>{{ c.CourseName }}</td>
+        <td>{{ c.Teacher }}</td>
+        <td class="num">{{ c.Grade | grade }}</td>
+        <td class="num">{{ c.Attempt if c.Attempt is not none else "-" }}</td>
+        <td><div class="actions">
+          <a class="btn secondary small" href="{{ url_for('credit_edit', **c.Key) }}">Edit</a>
+          <a class="btn danger small" href="{{ url_for('credit_delete', **c.Key) }}">Delete</a>
+        </div></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" class="muted">{{ "No matches." if q else "No enrollment records yet." }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

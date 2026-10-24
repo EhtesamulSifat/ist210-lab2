@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit" if editing else "New" }} enrollment{% endblock %}
+{% block content %}
+<div class="card" style="max-width:560px">
+  <h2>{{ "Edit enrollment record" if editing else "New enrollment record" }}</h2>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <label for="student_id">Student</label>
+    <select id="student_id" name="student_id" required>
+      {% for s in students %}
+        <option value="{{ s.StudentId }}"
+          {{ "selected" if v.get("student_id", "")|string == s.StudentId|string }}>
+          {{ s.LastName }}, {{ s.FirstName }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <label for="course_id">Course</label>
+    <select id="course_id" name="course_id" required>
+      {% for c in courses %}
+        <option value="{{ c.CourseId }}"
+          {{ "selected" if v.get("course_id", "")|string == c.CourseId|string }}>
+          {{ c.Name }} ({{ c.Teacher }})
+        </option>
+      {% endfor %}
+    </select>
+
+    <label for="grade">Grade (0&ndash;100, optional)</label>
+    <input type="number" id="grade" name="grade" step="0.01" min="0" max="100"
+           value="{{ v.get('grade', '') }}">
+
+    <label for="attempt">Attempt (1&ndash;255, optional)</label>
+    <input type="number" id="attempt" name="attempt" step="1" min="1" max="255"
+           value="{{ v.get('attempt', '') }}">
+
+    <p style="margin-top:18px">
+      <button class="btn" type="submit">{{ "Save changes" if editing else "Create record" }}</button>
+      <a class="btn secondary" href="{{ url_for('dashboard') }}">Cancel</a>
+    </p>
+  </form>
+</div>
+{% endblock %}

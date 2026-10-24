@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Students - University Records{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="toolbar">
+    <div>
+      <h2>Students</h2>
+      <span class="muted">Student &#8904; Person, with a count of enrollment records</span>
+    </div>
+    <a class="btn" href="{{ url_for('student_create') }}">+ New student</a>
+  </div>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Date of birth</th><th>Email</th>
+          <th class="num">Enrollments</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for s in students %}
+      <tr>
+        <td>{{ s.StudentId }}</td>
+        <td>{{ s.FirstName }}{% if s.MiddleInitial %} {{ s.MiddleInitial }}.{% endif %} {{ s.LastName }}</td>
+        <td>{{ s.DateOfBirth }}</td>
+        <td>{{ s.Email or "-" }}</td>
+        <td class="num">{{ s.Enrollments }}</td>
+        <td><div class="actions">
+          <a class="btn secondary small" href="{{ url_for('student_edit', student_id=s.StudentId) }}">Edit</a>
+          <a class="btn danger small" href="{{ url_for('student_delete', student_id=s.StudentId) }}">Delete</a>
+        </div></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="muted">No students yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

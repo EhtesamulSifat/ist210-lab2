@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit" if editing else "New" }} student{% endblock %}
+{% block content %}
+<div class="card" style="max-width:560px">
+  <h2>{{ "Edit student" if editing else "New student" }}</h2>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <label for="first_name">First name</label>
+    <input type="text" id="first_name" name="first_name" maxlength="128" required
+           value="{{ v.get('first_name', '') }}">
+
+    <label for="middle_initial">Middle initial (optional)</label>
+    <input type="text" id="middle_initial" name="middle_initial" maxlength="10"
+           value="{{ v.get('middle_initial', '') }}">
+
+    <label for="last_name">Last name</label>
+    <input type="text" id="last_name" name="last_name" maxlength="128" required
+           value="{{ v.get('last_name', '') }}">
+
+    <label for="date_of_birth">Date of birth</label>
+    <input type="date" id="date_of_birth" name="date_of_birth" required
+           value="{{ v.get('date_of_birth', '') }}">
+
+    <label for="email">Email (optional)</label>
+    <input type="email" id="email" name="email" maxlength="256"
+           value="{{ v.get('email', '') }}">
+
+    <p style="margin-top:18px">
+      <button class="btn" type="submit">{{ "Save changes" if editing else "Create student" }}</button>
+      <a class="btn secondary" href="{{ url_for('student_list') }}">Cancel</a>
+    </p>
+  </form>
+</div>
+{% endblock %}

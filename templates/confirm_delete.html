@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:620px">
+  <h2>{{ title }}</h2>
+  <dl class="details">
+    {% for label, value in details %}
+      <dt>{{ label }}</dt><dd>{{ value }}</dd>
+    {% endfor %}
+  </dl>
+
+  {% if dependents %}
+  <div class="warn">
+    <b>{{ dependents }} {{ dependents_label }}</b> still reference this record.
+    Because the foreign keys use <code>ON DELETE NO ACTION</code>, the database will
+    refuse this delete until those rows are removed or reassigned.
+  </div>
+  {% else %}
+  <p class="muted">Nothing else references this record. This can't be undone.</p>
+  {% endif %}
+
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn danger" type="submit">{{ "Try to delete" if dependents else "Delete" }}</button>
+    <a class="btn secondary" href="{{ back_url }}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

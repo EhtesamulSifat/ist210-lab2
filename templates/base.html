@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}University Records{% endblock %}</title>
+  <style>
+    :root { --bg:#f5f6f8; --card:#fff; --ink:#1b2430; --muted:#5b6778; --line:#dde2e8;
+            --brand:#24467a; --ok:#1d7545; --err:#b3261e; --warn:#8a5a00; --warnbg:#fff4de; }
+    * { box-sizing: border-box; }
+    body { margin:0; font:15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+           background:var(--bg); color:var(--ink); }
+    header { background:var(--brand); color:#fff; }
+    .bar { max-width:1080px; margin:0 auto; padding:12px 16px; display:flex;
+           align-items:center; gap:24px; flex-wrap:wrap; }
+    .bar .brand { font-weight:700; margin-right:auto; }
+    .bar a { color:#fff; text-decoration:none; opacity:.85; }
+    .bar a:hover, .bar a.active { opacity:1; text-decoration:underline; }
+    main { max-width:1080px; margin:24px auto; padding:0 16px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:8px;
+            padding:16px 20px; margin-bottom:24px; overflow-x:auto; }
+    h1,h2 { margin:0 0 4px; }
+    h2 { font-size:18px; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); white-space:nowrap; }
+    th { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.05em; }
+    td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; }
+    .btn { display:inline-block; padding:6px 12px; border-radius:6px; border:1px solid var(--brand);
+           background:var(--brand); color:#fff; text-decoration:none; cursor:pointer; font:inherit; }
+    .btn.secondary { background:#fff; color:var(--brand); }
+    .btn.danger { background:var(--err); border-color:var(--err); }
+    .btn.small { padding:3px 9px; font-size:13px; }
+    .actions { display:flex; gap:6px; }
+    label { display:block; margin:14px 0 4px; font-weight:600; }
+    input[type=text], input[type=email], input[type=date], input[type=number], input[type=search], select {
+      width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:6px; font:inherit; background:#fff; color:var(--ink); }
+    .flash { padding:10px 14px; border-radius:6px; margin-bottom:16px; border:1px solid; }
+    .flash.success { background:#e7f5ed; border-color:var(--ok); color:var(--ok); }
+    .flash.error { background:#fdeceb; border-color:var(--err); color:var(--err); }
+    .warn { background:var(--warnbg); border:1px solid #e6c36a; color:var(--warn);
+            padding:10px 14px; border-radius:6px; margin:12px 0; }
+    .toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px;
+               margin-bottom:12px; flex-wrap:wrap; }
+    .toolbar form { display:flex; gap:6px; }
+    .toolbar input[type=search] { min-width:280px; }
+    .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:24px; }
+    .stat { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 16px; }
+    .stat b { display:block; font-size:24px; }
+    .muted { color:var(--muted); }
+    dl.details { display:grid; grid-template-columns:120px 1fr; gap:4px 12px; margin:12px 0; }
+    dl.details dt { color:var(--muted); }
+    dl.details dd { margin:0; }
+    form.inline { display:inline; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <span class="brand">University Records &middot; IST 210 Lab 2</span>
+      <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint in ('dashboard','credit_create','credit_edit','credit_delete') }}">Enrollments</a>
+      <a href="{{ url_for('student_list') }}" class="{{ 'active' if request.endpoint and request.endpoint.startswith('student') }}">Students</a>
+      <a href="{{ url_for('course_list') }}" class="{{ 'active' if request.endpoint and request.endpoint.startswith('course') }}">Courses</a>
+    </div>
+  </header>
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

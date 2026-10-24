@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit" if editing else "New" }} course{% endblock %}
+{% block content %}
+<div class="card" style="max-width:560px">
+  <h2>{{ "Edit course" if editing else "New course" }}</h2>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <label for="name">Course name</label>
+    <input type="text" id="name" name="name" maxlength="50" required
+           value="{{ v.get('name', '') }}">
+
+    <label for="teacher">Teacher</label>
+    <input type="text" id="teacher" name="teacher" maxlength="256" required
+           value="{{ v.get('teacher', '') }}">
+
+    <p style="margin-top:18px">
+      <button class="btn" type="submit">{{ "Save changes" if editing else "Create course" }}</button>
+      <a class="btn secondary" href="{{ url_for('course_list') }}">Cancel</a>
+    </p>
+  </form>
+</div>
+{% endblock %}

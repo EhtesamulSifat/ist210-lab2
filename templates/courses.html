@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Courses - University Records{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="toolbar">
+    <div>
+      <h2>Courses</h2>
+      <span class="muted">Course &#8904; Credit, with a count of enrollment records</span>
+    </div>
+    <a class="btn" href="{{ url_for('course_create') }}">+ New course</a>
+  </div>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Course</th><th>Teacher</th><th class="num">Enrollments</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for c in courses %}
+      <tr>
+        <td>{{ c.CourseId }}</td>
+        <td>{{ c.Name }}</td>
+        <td>{{ c.Teacher }}</td>
+        <td class="num">{{ c.Enrollments }}</td>
+        <td><div class="actions">
+          <a class="btn secondary small" href="{{ url_for('course_edit', course_id=c.CourseId) }}">Edit</a>
+          <a class="btn danger small" href="{{ url_for('course_delete', course_id=c.CourseId) }}">Delete</a>
+        </div></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="muted">No courses yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
